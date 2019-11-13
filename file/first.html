@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>切片上传</title>
+   <script src="/file/jquery.js"></script>
+</head>
+<body>
+   <div id="per_box" style="width: 350px; height: 15px; background-color: #cccccc">
+   <div id="per" style="width: 0%; height: 100%; background-color: #007CD5"></div>
+   <span id="per_num"></span>
+</div>
+<br />
+<input type="file" name="file_tag" id="file_tag">
+<input type="button" value="上传" id = "upload_btn">
+
+<div id="show_img"></div>
+</body>
+</html>
+<script>
+$("#upload_btn").click(function(){
+	var files= $("#file_tag")[0].files[0];
+	if(!files){
+		$("#file_tag").trigger("click");
+	}
+	// console.log(file);return;
+	var chunk;//定义当前在我的浏览器上面我传递了多少页
+	upload(files);
+
+	function upload (files){
+		var every_size = 1024*5;//每页的数据
+		var chunks = Math.ceil(files.size /every_size);//总页码
+		var filename = files.name+"_chunk";//定义的名字
+		var chunk = window.localStorage.getItem(filename) || 1;//当前页
+			chunk = chunk >= chunks ? chunks : parseInt(chunk);
+		
+		//获取图片数据
+		var offset = (chunk-1) * every_size;// 相当于 分页的偏移量
+		var limit = offset > files.size  ? files.size : chunk * every_size;// 计算数据 
+		var per = (limit/files.size * 100).toFixed(2); //toFixed 取小数点的后两位  
+		var data = files.slice(offset,limit);// 每一页的数据
+		
+		//将数据发送给后端
+		var form = new FormData();
+		form.append("data",data);
+		form.append("filename",files.name);
+		form.append("filesize",files.size);
+
+		$.ajax({
+			type : "post",
+			dataType: "json",
+			data : form,
+			url : "/file/aaa.php",
+			processData: false,
+			contentType: false,
+			cache:false,
+			success:function(res){
+				if(res.error == 0){
+					if(chunk >= chunks){
+						per = 100 + "%";
+						$('#per').css({width : per});
+						$("#per_num").text(per);
+						// var img ="<img src="+res.data.path+">";
+						// $("#show_img").append(img);
+						var video = "<video src="+res.data.path+" controls='controls'></video>";
+						$("#show_img").append(video);
+					}else{
+						chunk = chunk + 1;
+						per = per + "%";
+						$("#per").css({width:per});
+						$("#per_num").text(per);
+						window.localStorage.setItem(filename,chunk);
+						upload(files);
+					}
+				}
+			}
+		});
+	}
+});
+
+
+</script>

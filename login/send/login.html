@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单点登录</title>
+	<script src="/jq.js"></script>
+</head>
+<body>
+<marquee><h2><font color="blue">登录</font></h2></marquee>
+<center>
+	<table border="66">
+		<tr>
+			<td>用户名：</td>
+			<td>
+				<input type="text" name="name">
+			</td>
+		</tr>
+		<tr>
+			<td>密码：</td>
+			<td>
+				<input type="password" name="pwd">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="button" value="立即登录" name="btn">
+			</td>
+		</tr>
+	</table>
+</center>			
+</body>
+</html>
+<script>
+$(document).ready(function(){
+	$("input[name='btn']").click(function(){
+		var data = {};// 定义一个空的json串
+		var name = $("input[name='name']").val();
+		var pwd = $("input[name='pwd']").val();
+
+		data.name = name;
+		data.pwd = pwd;
+		
+		$.ajax({
+			url:'/login.php',//请求地址
+			type:'post',//请求的类型
+			dataType:'json',//返回的类型
+			data:data,//要传输的数据
+			success:function(res){ //成功之后回调的方法
+				if (res==1) {
+					alert("添加成功");
+					location.href = "/redis/list.php";
+				}else{
+					alert("添加失败");
+					location.href = "/add.html";
+				}
+			}
+		})
+	});
+});
+</script>

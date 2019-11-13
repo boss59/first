@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>展示数据</title>
+	<script src="/jq.js"></script>
+</head>
+<body>
+<center>
+	<table border="66">
+		<tr>
+			<td>name</td>
+			<td>address</td>
+			<td>desc</td>
+			<td>操作</td>
+		</tr>
+		<tbody id="list">
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</center>	
+</body>
+</html>
+<script>
+$(document).ready(function(){
+	data ={};
+	$.ajax({
+		url:'http://www.send.session.com/user.php',//请求地址
+		type:'post',//请求的类型
+		dataType:'jsonp',//返回的类型
+		data:data,//要传输的数据
+    	jsonp:'jsonpCallback', // get请求携带的参数名称，
+		success:function(res){ //成功之后回调的方法
+			$('#list').empty();//清空 tr td
+	      	$.each(res,function(k,v){
+		        var tr = $('<tr></tr>');//创建td
+		        tr.append('<td align="center">'+v.name+'</td>');
+		        tr.append('<td align="center">'+v.address+'</td>');
+		        tr.append('<td align="center">'+v.desc+'</td>');
+		        tr.append('<td align="center"><a href="" title="编辑">修改</a> | <a class="del" href="" title="编辑">移除</a></td>');
+		        $('#list').append(tr).css('color','blue');
+	      	})
+		}
+	})
+});
+</script>
