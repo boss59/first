@@ -1,0 +1,1 @@
+D:/phpstudy_pro/Extensions/php/php7.3.4nts/php.exe -q  D:/phpstudy_pro/WWW/shop/new/add.php
