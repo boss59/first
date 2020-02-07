@@ -16,7 +16,7 @@
 $app_key = '1903';
 $app_sercret = '1903a';
 
-$url = "http://www.online.com/ssl/login";
+$url = "http://www.online.com/ssl/register";
 
 
 #拼接请求登陆接口的数据
@@ -25,7 +25,9 @@ $login_data = [
 	'password' => '123456',
 	'app_key' => $app_key,
 ];
-
+// 防止重放
+$login_data['time'] = time();
+$login_data['rand_code'] = rand(000000,999999);
 // =============== 参数使用非对称加密  ==============
 $encrypt_data = RsaEncrypt( $login_data );
 
