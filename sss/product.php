@@ -42,9 +42,11 @@
 
 				$product_id_arr[] = $v['goods_id'];
 				$product_detail_key = 'product_detail_'.$v['goods_id'];
+				// 存 goods_id_key 对应的 数据
 				$redis -> set($product_detail_key,json_encode($v),60*5);
 			}
 
+			// 存redis中每一页的数据
 			$redis -> set($product_list_key,json_encode($product_id_arr),60*5);
 			var_dump($product_list);
 		}else{
@@ -59,7 +61,7 @@
 
 		foreach ($id_arr as $k => $v) {
 			
-			$product_detail_key = 'product_detail_'.$v;
+			$product_detail_key = 'product_detail_'.$v;// goods_id_key
 
 			$product_detail = $redis -> get($product_detail_key);
 
