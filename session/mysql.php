@@ -75,7 +75,7 @@ class  MyMysqlSession implements SessionHandlerInterface
                 return false;
             }
         }else{
-            $update_sql = 'update t_session set session_data="'.addslashes($session_data).'",expire='.(time() + $this ->expire).'where session_id="'.$session_id.'"';
+            $update_sql = 'update t_session set session_data="'.addslashes($session_data).'",expire='.(time() + $this ->expire).' where session_id="'.$session_id.'"';
             $update = $this -> mysql -> query($update_sql);
 
             if ($update){
@@ -135,11 +135,11 @@ session_set_save_handler(
 );
 
 session_start();
-//
-//$_SESSION['user_info'] = [
-//    'user_id' => 1,
-//    'user_name' => '阿斯顿撒'
-//];
+
+$_SESSION['user_info'] = [
+    'user_id' => 1,
+    'user_name' => '暗无天日'
+];
 
 // session_destroy();
 var_dump($_SESSION);
