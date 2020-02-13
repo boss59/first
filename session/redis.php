@@ -30,7 +30,6 @@ class  MyRedisSession implements SessionHandlerInterface
         $session_data = $this -> redis -> get($key);
 
         $this -> redis ->expire($key,$this->expire);// 延长时间
-
         if ($session_data){
             return $session_data;
         }else{
@@ -101,8 +100,7 @@ $_SESSION['user_info'] = [
     'user_id' => 1,
     'user_name' => '一叶之秋'
 ];
-echo 'session_data:<br />';
-//session_destroy();
+session_destroy();
 
 var_dump($_SESSION);
 

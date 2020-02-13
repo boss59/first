@@ -39,10 +39,10 @@ class  MyMysqlSession implements SessionHandlerInterface
             if ($session_info['expire'] < time()){
 
                 # 删除过期的session
-                $delete_sql = 'delete from t_session where session_id="'.$session_id.'"';
-                $delete_result = $this -> mysql -> query($delete_sql);
+                $del_sql = 'delete from t_session where session_id="'.$session_id.'"';
+                $del_result = $this -> mysql -> query($del_sql);
 
-                if ( $delete_result ){
+                if ( $del_result ){
                     return serialize([]);
                 }else{
                     return serialize([]);
@@ -76,6 +76,8 @@ class  MyMysqlSession implements SessionHandlerInterface
             }
         }else{
             $update_sql = 'update t_session set session_data="'.addslashes($session_data).'",expire='.(time() + $this ->expire).' where session_id="'.$session_id.'"';
+
+            echo $update_sql;exit;
             $update = $this -> mysql -> query($update_sql);
 
             if ($update){
