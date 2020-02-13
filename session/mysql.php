@@ -29,6 +29,7 @@ class  MyMysqlSession implements SessionHandlerInterface
     {
         // TODO: Implement read() method.
         // var_dump(__METHOD__);// 打印当前方法
+
         $select_sql = 'select * from t_session where session_id="'.$session_id.'"';
         $session_info = $this -> mysql -> query($select_sql) -> fetch_assoc();
 
