@@ -76,8 +76,7 @@ class  MyMysqlSession implements SessionHandlerInterface
             }
         }else{
             $update_sql = 'update t_session set session_data="'.addslashes($session_data).'",expire='.(time() + $this ->expire).' where session_id="'.$session_id.'"';
-
-            echo $update_sql;exit;
+            //echo $update_sql;exit;
             $update = $this -> mysql -> query($update_sql);
 
             if ($update){
