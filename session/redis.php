@@ -87,6 +87,7 @@ $redis_session  = new MyRedisSession();
 session_set_save_handler(
     [$redis_session,'open'],
     [$redis_session,'close'],
+    [$redis_session,'read'],
     [$redis_session,'write'],
     [$redis_session,'destroy'],
     [$redis_session,'gc']
@@ -101,6 +102,7 @@ $_SESSION['user_info'] = [
     'user_name' => '一叶之秋'
 ];
 echo 'session_data:<br />';
+//session_destroy();
 
 var_dump($_SESSION);
 
