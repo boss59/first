@@ -32,7 +32,7 @@
 
     }else{
         $next_id = $user_id +1;
-        $id_sql = 'update id_auto set `type`="'.$user_id.'" where auto="'.$next_id.'"';
+        $id_sql = 'update id_auto set `type`="'.$user_id.'" where auto_number="'.$next_id.'"';
         $id_result = $mysql -> query($id_sql);
     }
 
