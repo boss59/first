@@ -2,12 +2,12 @@
 
     # 根据用户 id 分表 之后 如何 登陆
 
-    $user_name = $_GET['name'];
+    $user_name = $_GET['name']??'';
     if (empty($user_name)){
         echo '无参数';exit;
     }
 
-    $password = $_GET['psd'];
+    $password = $_GET['psd']??'';
     if (empty($password)){
          echo '无参数';exit;
     }

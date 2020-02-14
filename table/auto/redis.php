@@ -1,7 +1,7 @@
 <?php
 
     # redis 记录 id
-    $user_name = $_GET['name'];
+    $user_name = $_GET['name']??'';
     if (empty($user_name)){
         echo '无参数';exit;
     }
