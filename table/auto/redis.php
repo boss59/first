@@ -21,8 +21,7 @@
         $sql = 'select * FROM user_0 UNION
                 select * FROM user_1 UNION
                 select * FROM user_2 UNION                                          
-                select * FROM user_3 UNION
-                select * FROM user_4 
+                select * FROM user_3
                 ORDER BY user_id DESC limit 1';
 
         $result = $mysql -> query($sql) -> fetch_assoc();
