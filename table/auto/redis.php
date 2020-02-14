@@ -29,6 +29,7 @@
 
     # 根据 分表规则 写入对应的数据
     $table_name = 'user_'.($next_user_id % 4);// 取余
+    $table_number = $next_user_id % 4;
 
     # 因为这一步要做2部 操作
         # 1. 把 redis 中记录的id +1
@@ -57,12 +58,23 @@
 
     # 先写 redis 在写 mysql 【建议】
     if ($redis_result){
+
+        # 开启事务
+        $mysql -> query('begin');
+
         $insert_user_sql = 'insert into  ' .$table_name. ' (`user_id`,`uname`) values('.$next_user_id.',"'.$user_name.'")';
         $insert_result = $mysql -> query($insert_user_sql);
 
-        if ($insert_result){
+        # 用户写入表成功之后，在关联表中写入用户和表的关联关系
+        $user_name_crc32 = crc32($user_name);
+        $relation_sql = 'insert into user_table_relation values (NULL ,'.$user_name_crc32.','.$table_number.')';
+        $relation_result = $mysql -> query($relation_sql);
+
+        if ($insert_result && $relation_result){
+            $mysql -> query('commit');
             echo "success";
         }else{
+            $mysql -> query('rollback');
             echo "fail";
         }
     }else{
