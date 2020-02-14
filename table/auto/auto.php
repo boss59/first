@@ -17,7 +17,7 @@
         $user_id = $id_info['auto_number'];
     }
 
-    $table_name = 'user_0'.$user_id %4;// 表的名称
+    $table_name = 'user_'.$user_id %4;// 表的名称
 
     # 开启事务
     $mysql -> query('begin');
