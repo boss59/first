@@ -1,5 +1,5 @@
 <?php
-	echo phpinfo();die;
+	// echo phpinfo();die;
 	// 连接数据库 查数据库
 	$link = mysqli_connect('127.0.0.1','root','root','aaa');
 	$sql = "select * from user";
@@ -11,7 +11,7 @@
 		$nums = sprintf("%u",crc32($v['uname']))%4;
 		// echo $nums."<br />";
 		$uname= $v['uname']; $pwd= $v['pwd'];
-		$sql2 = "insert into user_".$nums."(uname,pwd) values ('$uname','$pwd')";
+		$sql2 = "insert into user_".$nums." (uname,pwd) values ('$uname','$pwd')";
 		$result = mysqli_query($link,$sql2);
 	}
 	
