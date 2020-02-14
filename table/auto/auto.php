@@ -22,7 +22,7 @@
     # 开启事务
     $mysql -> query('begin');
 
-    $insert_user_sql = "insert into ".$table_name."(user_id,uname) values(NULL,'$user_name')";
+    $insert_user_sql = 'insert into  "'.$table_name.'" (`user_id`,`uname`)  values("'.$user_id.'","'.$user_name.'")';
     $insert_result = $mysql -> query($insert_user_sql);
 
     if ($user_id == 1){
@@ -32,7 +32,7 @@
 
     }else{
         $next_id = $user_id +1;
-        $id_sql = 'update id_auto set `type`="'.$user_id.'" where auto_number="'.$next_id.'"';
+        $id_sql = 'update id_auto set auto_number="'.$next_id.'" where type=1';
         $id_result = $mysql -> query($id_sql);
     }
 
