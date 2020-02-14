@@ -1,5 +1,6 @@
 <?php
 
+    # redis 记录 id
     $user_name = $_GET['name'];
     if (empty($user_name)){
         echo '无参数';exit;
@@ -13,6 +14,7 @@
     $user_id_key = 'max_user_id';
     $user_id = $redis -> get($user_id_key);
 
+    # 没有从 redis 读取 出来 id
     if ($user_id !== false){
         $next_user_id = $user_id;
     }else{
@@ -28,8 +30,9 @@
     }
 
     # 根据 分表规则 写入对应的数据
-    $table_name = 'user_'.($next_user_id % 4);// 取余
-    $table_number = $next_user_id % 4;
+    $table_number = $next_user_id % 4;// 取余
+    $table_name = 'user_'.$table_number;
+
 
     # 因为这一步要做2部 操作
         # 1. 把 redis 中记录的id +1
@@ -63,11 +66,16 @@
         $mysql -> query('begin');
 
         $insert_user_sql = 'insert into  ' .$table_name. ' (`user_id`,`uname`) values('.$next_user_id.',"'.$user_name.'")';
+        echo $insert_user_sql; echo "<hr />";
+
         $insert_result = $mysql -> query($insert_user_sql);
 
         # 用户写入表成功之后，在关联表中写入用户和表的关联关系
-        $user_name_crc32 = crc32($user_name);
-        $relation_sql = 'insert into user_table_relation values (NULL ,'.$user_name_crc32.','.$table_number.')';
+        $user_name_crc32 = crc32($user_name); // 将用户名 通过 crc32 转换 成数字
+
+        $relation_sql = 'insert into user_table_relation values (NULL ,'.$user_name_crc32.','.$table_number.' )';
+        echo $relation_sql;
+
         $relation_result = $mysql -> query($relation_sql);
 
         if ($insert_result && $relation_result){
