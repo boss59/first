@@ -9,12 +9,10 @@
     $redis = new Redis();
     $redis -> connect('127.0.0.1',6379);
 
-
     $user_name = $_GET['name'];
     if (empty($user_name)){
         exit('缺少name参数');
     }
-
 
     # 对用户名 hash 并 根据 hash 值 确定 用户要写入那张表中
     $first_char = substr(hash('md5',$user_name),0,1);
