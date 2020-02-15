@@ -74,7 +74,6 @@
 
     $insert = $mysql -> query($insert_sql);
     if ( $insert ){
-
         echo "注册成功";
     }else{
         echo "注册失败";
