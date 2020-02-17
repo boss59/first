@@ -59,7 +59,7 @@
 
     # 确定 用户写入那张表中
     $table_number = $next_user_id % 10;
-    $table_name = 'user_'.$table_number;
+    $table_name = 'user_0'.$table_number;
 
     echo '写入'.$table_name."中<hr />";
 
@@ -74,7 +74,7 @@
         {
             $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`user_name_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.')';
 
-            $user_inser_sql = 'insert into '.$table_name.'(`user_id`,`password`,`user_name`) values('.$next_user_id.',"123456","'.$user_name.'")';
+            $user_inser_sql = 'insert into '.$table_name.' (`user_id`,`password`,`user_name`) values('.$next_user_id.',"123456","'.$user_name.'")';
         }elseif ($reg_type == 2){
             $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`email_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.')';
 
