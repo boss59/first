@@ -1,5 +1,5 @@
 <?php
-	
+    echo phpinfo();
 	// 第一种： for
 	// for($i=1; $i<=strlen($str);$i++){
  //        echo substr($str,-$i,1);
