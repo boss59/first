@@ -72,15 +72,15 @@
         $mysql -> query('begin');
         if ( $reg_type == 1)
         {
-            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`user_name_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.')';
+            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`user_name_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.' )';
 
             $user_inser_sql = 'insert into '.$table_name.' (`user_id`,`password`,`user_name`) values('.$next_user_id.',"123456","'.$user_name.'")';
         }elseif ($reg_type == 2){
-            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`email_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.')';
+            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`email_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.' )';
 
             $user_inser_sql = 'insert into '.$table_name.' (`user_id`,`password`,`email`) values('.$next_user_id.',"123456","'.$user_name.'")';
         }else{
-            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`phone_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.')';
+            $relation_sql = 'insert into user_relation(`id`,`table_number`,`user_id`,`phone_crc32`) values( NULL,'.$table_number.', '.$next_user_id.', '.$name_crc32.' )';
 
             $user_inser_sql = 'insert into '.$table_name.' (`user_id`,`password`,`phone`) values('.$next_user_id.',"123456","'.$user_name.'")';
         }
