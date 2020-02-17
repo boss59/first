@@ -62,6 +62,8 @@
         $user_info = $mysql ->query($user_sql) ->fetch_assoc();
 
         if (empty($user_info)){
+            session_start();
+            $_SESSION["user_info"]=$user_info;
             exit('登陆成功');
         }else{
             exit('登陆的失败');
