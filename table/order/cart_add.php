@@ -14,11 +14,11 @@
 
     $mysql  = new Mysqli('127.0.0.1','root','root','order');
 
-    $sql = 'insert into shop_cart(`goods_id`,`user_id`,`buy_number`,) values('.$goods_id.','.$user_id.' )';
+    $sql = 'insert into shop_cart(`goods_id`,`user_id`,`buy_number`) values('.$goods_id.','.$user_id.' )';
 
     $cart = $mysql -> query($sql);
     if ($cart){
-        echo "success";
+        echo '<a href="./cart_list.php"> <button>购物车列表</button> </a>';
     }else{
         echo "fail";
     }

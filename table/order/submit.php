@@ -1,5 +1,6 @@
 <?php
 
+    // 确认订单
     header('content-type:text/html;charset=utf-8');
     $mysql  = new Mysqli('127.0.0.1','root','root','order');
     $mysql->query('set names utf8');
@@ -9,7 +10,7 @@
     $user_id = 1;
 
     # 取出来购物车的数据
-    $cart_sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where cart_idin('.$cart_id.')';
+    $cart_sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where cart_idin( '.$cart_id.' )';
     $cart_list = $mysql -> query($cart_sql) -> fetch_all(MYSQLI_ASSOC);
 
     # 1. 根据 用户 id 确定 用户的数量 写入那张表中
@@ -42,7 +43,7 @@
                 select * FROM shop_order_08 UNION
                 select * FROM shop_order_09 UNION
                 ORDER BY order_id DESC limit 1';
-        echo "订单表".$order_id_sql;
+        echo "订单表sql：".$order_id_sql;
         $order_id_info = $mysql -> query($order_id_sql) ->fetch_assoc();
 
         if (empty($order_id_info)){
@@ -140,7 +141,7 @@ try{
     echo "<hr />";
 
     echo '写入订单详情表的id：'.$detail_id.'<br />';
-    $detail_table_name = 'shop_order_detail_user_0'.$table_number;// 订单子表
+    $detail_table_name = 'shop_order_detail_user_0'.$table_number;// 订单详情表
 
     # 根据 商家 生成 子订单数 【写入订单子表】
     foreach ($new as $k => $v){
