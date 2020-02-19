@@ -1,17 +1,17 @@
 <?php
 
-    // 商品列表
-    header('content-type:text/html;charset=utf-8');
-    $mysql  = new Mysqli('127.0.0.1','root','root','order');
+// 商品列表
+header('content-type:text/html;charset=utf-8');
+$mysql  = new Mysqli('127.0.0.1','root','root','order');
 
-    $mysql->query('set names utf8');
+$mysql->query('set names utf8');
 
-    $sql ='select * from shop_goods g LEFT JOIN shop_business b ON B.b_id = g.b_id';
+$sql ='select * from shop_goods g LEFT JOIN shop_business b ON B.b_id = g.b_id';
 
-    $goods_list = $mysql -> query($sql) -> fetch_all(MYSQLI_ASSOC);
+$goods_list = $mysql -> query($sql) -> fetch_all(MYSQLI_ASSOC);
 
-    echo "<style>td{padding: 5px 10px;}</style>";
-    echo '<table cellpadding="0" cellspacing="0" border="1">
+echo "<style>td{padding: 5px 10px;}</style>";
+echo '<table cellpadding="0" cellspacing="0" border="1">
     <tr>
            <tb>编号</tb>
            <tb>商品名字</tb>
@@ -21,17 +21,16 @@
            <tb>操作</tb>
     </tr>';
 
-    foreach( $goods_list as $k => $v){
+foreach( $goods_list as $k => $v){
 
-        echo '<tr>
+    echo '<tr>
            <tb>'.$k.'</tb>
            <tb>'.$v['goods_name'].'</tb>
+           <tb>'.$v['b_id'].'</tb>
            <tb>'.$v['b_name'].'</tb>
-           <tb>'.$v['goods_name'].'</tb>
            <tb>'.$v['goods_price'].'</tb>
            <tb>'.$v['status'].'</tb> 
            <tb><a href="./cart_add.php?goods_id='.$v['goods_id'].'&b_id='.$v['b_id'].'">加入购物车</a></tb>
         </tr>';
-    }
+}
 ?>
-
