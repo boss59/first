@@ -68,7 +68,7 @@ try{
     // 生成 订单
     $order_insert_sql = 'insert into '.$order_table_name.' 
     (`order_id`,`order_no`,`user_id`,`order_amount`,`order_status`) 
-    values( '.$order_id.','.$order_no.','.$user_id.','.$order_amout.',1)';
+    values( '.$order_id.','.$order_no.','.$user_id.','.$order_amount.',1)';
     echo "订单sql:".$order_insert_sql;
     $order_insert = $mysql -> query($order_insert_sql);
 
@@ -174,7 +174,7 @@ try{
         }
         echo "<br />";
         $order_son_insert_sql = 'insert into '.$order_son_table_name.'
-        (`order_son_id`,`order_id`,`user_id`,`order_amout`,`order_status`)
+        (`order_son_id`,`order_id`,`user_id`,`order_amount`,`order_status`)
         values( '.$order_son_id.','.$order_id.','.$user_id.','.$business_order_amount.',1)';
         $order_son_id ++;
 
