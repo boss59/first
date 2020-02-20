@@ -153,7 +153,7 @@ try{
             # 写入 订单详情表的数据
             $detail_id_insert_sql = 'insert into '.$detail_table_name.'
             (`detail_id`,`order_id`,`order_son_id`,`goods_id`,`goods_name`,`goods_price`)
-            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].')';
+            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].' )';
             echo '订单详情表添加：'.$detail_id_insert_sql;
             $mysql -> query($detail_id_insert_sql);
             $detail_id ++;
