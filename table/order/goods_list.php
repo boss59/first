@@ -29,7 +29,7 @@
            <tb>'.$v['b_id'].'</tb>
            <tb>'.$v['b_name'].'</tb>
            <tb>'.$v['goods_price'].'</tb>
-           <tb>'.$v['status'].'</tb> 
+           <tb>'.$v['stack'].'</tb> 
            <tb><a href="./cart_add.php?goods_id='.$v['goods_id'].'&b_id='.$v['b_id'].'">加入购物车</a></tb>
         </tr>';
     }
