@@ -32,7 +32,7 @@
         </tr>
     <?php foreach ( $goods_list as $k => $v){?>
         <tr align="center">
-            <td><?php echo $k?></td>
+            <td><?php echo $v['goods_id']?></td>
             <td><?php echo $v['goods_name']?></td>
             <td><?php echo $v['b_id']?></td>
             <td><?php echo $v['b_name']?></td>
