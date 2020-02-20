@@ -13,8 +13,8 @@
     $cart_sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where cart_idin( '.$cart_id.' )';
     $cart_list = $mysql -> query($cart_sql) -> fetch_all(MYSQLI_ASSOC);
 
-    # 1. 根据 用户 id 确定 用户的数量 写入那张表中
-    # 分表规则：对用户 id 对 10 进行取余
+
+    # 1. 根据 用户 id 确定 用户的数量 写入那张表中  #分表规则：对用户 id 对 10 进行取余
     $table_number = $user_id % 10;
     $order_table_name = 'shop_order_0'.$table_number;// 订单表
 
@@ -43,7 +43,7 @@
                 select * FROM shop_order_08 UNION
                 select * FROM shop_order_09 UNION
                 ORDER BY order_id DESC limit 1';
-        echo "订单表sql：".$order_id_sql;
+        echo "订单主表sql：".$order_id_sql;
         $order_id_info = $mysql -> query($order_id_sql) ->fetch_assoc();
 
         if (empty($order_id_info)){
@@ -69,42 +69,42 @@ try{
     $order_insert_sql = 'insert into '.$order_table_name.' 
     (`order_id`,`order_no`,`user_id`,`order_amount`,`order_status`) 
     values( '.$order_id.','.$order_no.','.$user_id.','.$order_amount.',1)';
-    echo "订单sql:".$order_insert_sql;
-    $order_insert = $mysql -> query($order_insert_sql);
+    echo "订单主表添加sql:".$order_insert_sql;
+    $obj= $mysql -> query($order_insert_sql);
 
     // 错误信息
-    if (!$order_insert){
-        throw new Exception("订单表错误");
+    if (!$obj){
+        throw new Exception("订单主表写入错误");
     }
 
     //$order_id = $mysql -> insert_id;// 获取order_id
     echo '<br />order_id:'.$order_id.'<hr />';
-    ################### 2 写入订单表的数据 END ###########
 
-    ################### 2 写入订单子表的数据 START ##################
+
+    ################### 2 写入订单表的数据 END  2写入订单子表的数据 START###########
     $order_son_id_key = 'shop_order_son_next_id';
     $order_son_id = $redis -> get($order_son_id_key);
 
     # 从redis中 没有读取 到下一次的要写入的id
     if ($order_son_id === false){
-        $order_son_id_sql ='select * FROM shop_order_son_00 UNION
-                select * FROM shop_order_son_01 UNION
-                select * FROM shop_order_son_02 UNION
-                select * FROM shop_order_son_03 UNION
-                select * FROM shop_order_son_04 UNION
-                select * FROM shop_order_son_05 UNION
-                select * FROM shop_order_son_06 UNION
-                select * FROM shop_order_son_07 UNION
-                select * FROM shop_order_son_08 UNION
-                select * FROM shop_order_son_09 UNION
-                ORDER BY order_son_id DESC limit 1';
+        $order_son_id_sql ='select * FROM shop_order_son_user_00 UNION
+                select * FROM shop_order_son_user_01 UNION
+                select * FROM shop_order_son_user_02 UNION
+                select * FROM shop_order_son_user_03 UNION
+                select * FROM shop_order_son_user_04 UNION
+                select * FROM shop_order_son_user_05 UNION
+                select * FROM shop_order_son_user_06 UNION
+                select * FROM shop_order_son_user_07 UNION
+                select * FROM shop_order_son_user_08 UNION
+                select * FROM shop_order_son_user_09 UNION ORDER BY order_son_id DESC limit 1';
+
         echo "订单子表".$order_son_id_sql;
         $order_son_id_info = $mysql -> query($order_son_id_sql) ->fetch_assoc();
 
         if (empty($order_son_id_sql)){
             $order_son_id = 1;
         }else{
-            $order_son_id = $order_son_id_info['order_son_id'];
+            $order_son_id = $order_son_id_info['order_son_id'] + 1;
         }
     }
     echo "<hr />";
@@ -136,15 +136,15 @@ try{
                 select * FROM shop_order_detail_user_06 UNION
                 select * FROM shop_order_detail_user_07 UNION
                 select * FROM shop_order_detail_user_08 UNION
-                select * FROM shop_order_detail_user_09 UNION
-                ORDER BY detail_id DESC limit 1';
-        echo "订单详情表".$detail_id_sql;
+                select * FROM shop_order_detail_user_09 UNION ORDER BY detail_id DESC limit 1';
+
+        echo "订单详情表".$detail_id_sql."<br />";
         $detail_id_info = $mysql -> query($detail_id_sql) ->fetch_assoc();
 
         if (empty($detail_id_info)){
             $detail_id = 1;
         }else{
-            $detail_id = $detail_id_info['detail_id'];
+            $detail_id = $detail_id_info['detail_id'] + 1;
         }
     }
     echo "<hr />";
@@ -160,13 +160,13 @@ try{
             $business_order_amount += $vv['buy_number'] * $vv['goods_price'];
             # 写入 订单详情表的数据
             $detail_id_insert_sql = 'insert into '.$detail_table_name.'
-            (`detail_id`,`order_id`,`order_son_id`,`goods_id`,`goods_name`,`goods_price`)
-            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].' )';
+            (`detail_id`,`order_id`,`order_son_id`,`goods_id`,`goods_name`,`goods_price`,`business_id`,`buy_number`)
+            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].','.$k.','.$vv['buy_number'].' )';
             echo '订单详情表添加：'.$detail_id_insert_sql;
-            $detail_id_insert = $mysql -> query($detail_id_insert_sql);
+            $detail_insert = $mysql -> query($detail_id_insert_sql);
 
             // 错误信息
-            if (!$detail_id_insert){
+            if (!$detail_insert){
                 throw new Exception("订单详情表错误");
             }
 
@@ -174,8 +174,8 @@ try{
         }
         echo "<br />";
         $order_son_insert_sql = 'insert into '.$order_son_table_name.'
-        (`order_son_id`,`order_id`,`user_id`,`order_amount`,`order_status`)
-        values( '.$order_son_id.','.$order_id.','.$user_id.','.$business_order_amount.',1)';
+        (`order_son_id`,`order_id`,`user_id`,`order_amount`,`order_status`,`business_id`)
+        values( '.$order_son_id.','.$order_id.','.$user_id.','.$business_order_amount.',1,'.$k.' )';
         $order_son_id ++;
 
         echo '订单子表添加：'.$order_son_insert_sql;
