@@ -49,7 +49,7 @@
         if (empty($order_id_info)){
             $order_id = 1;
         }else{
-            $order_id = $order_id_info['order_id'];
+            $order_id = $order_id_info['order_id'] + 1;
         }
     }
     echo "<hr />";
@@ -70,7 +70,12 @@ try{
     (`order_id`,`order_no`,`user_id`,`order_amount`,`order_status`) 
     values( '.$order_id.','.$order_no.','.$user_id.','.$order_amout.',1)';
     echo "订单sql:".$order_insert_sql;
-    $obj = $mysql -> query($order_insert_sql);
+    $order_insert = $mysql -> query($order_insert_sql);
+
+    // 错误信息
+    if (!$order_insert){
+        throw new Exception("订单表错误");
+    }
 
     //$order_id = $mysql -> insert_id;// 获取order_id
     echo '<br />order_id:'.$order_id.'<hr />';
@@ -106,9 +111,12 @@ try{
 
     echo '写入订单子表的id：'.$order_son_id.'<br />';
     $order_son_table_name = 'shop_order_son_user_0'.$table_number;// 订单子表
+    echo '订单子表：'.$order_son_table_name.'<br />';
 
 
+    # 订单子表的数据 是根据商家进行分的
     $new = [];
+    # 把购物车的数据 按照商家进行分类
     foreach( $cart_list as $k =>$v){
         $new[$v['b_id']][] = $v;
     }
@@ -155,7 +163,13 @@ try{
             (`detail_id`,`order_id`,`order_son_id`,`goods_id`,`goods_name`,`goods_price`)
             values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].' )';
             echo '订单详情表添加：'.$detail_id_insert_sql;
-            $mysql -> query($detail_id_insert_sql);
+            $detail_id_insert = $mysql -> query($detail_id_insert_sql);
+
+            // 错误信息
+            if (!$detail_id_insert){
+                throw new Exception("订单详情表错误");
+            }
+
             $detail_id ++;
         }
         echo "<br />";
@@ -165,7 +179,12 @@ try{
         $order_son_id ++;
 
         echo '订单子表添加：'.$order_son_insert_sql;
-        $mysql -> query($order_son_insert_sql);
+        $order_son_insert = $mysql -> query($order_son_insert_sql);
+
+        // 错误信息
+        if (!$order_son_insert){
+            throw new Exception("订单子表错误");
+        }
         echo '<hr />';
 
     }
