@@ -11,7 +11,7 @@
     }
     $business_id =$_GET['b_id'];
     $user_id =1;
-    echo $goods_id,$business_id;exit;
+
     $mysql  = new Mysqli('127.0.0.1','root','root','order');
 
     $sql = 'insert into shop_cart(`goods_id`,`user_id`,`b_id`,`buy_number`,`status`) values('.$goods_id.','.$user_id.','.$b_id.',1,1)';
