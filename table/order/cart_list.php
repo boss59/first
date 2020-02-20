@@ -6,16 +6,17 @@
 
     $mysql->query('set names utf8');
 
-    $sql = 'select * from shop_cart c LEFT JOIN shop_goods g ON g.goods_id =c.goods_id where user_id =1';
+    $sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where user_id = 1';
 
-    $list = $mysql -> query($sql) -> fetch_all(MYSQLI_ASSOC);
+
+    $cart_list = $mysql -> query($sql) -> fetch_all(MYSQLI_ASSOC);
 
     $cart_id = '';
-    foreach($list as $v){
+    foreach($cart_list as $v){
         $cart_id .=$v['cart_id'].',';
     }
 
-    echo '<a href="./submit.php?cart_id='.$cart_id.'"></a>';
+    echo '<a href="./submit.php?cart_id='.$cart_id.'">生成订单</a><br /><hr />';
 
-
+    print_r($cart_list);
 ?>

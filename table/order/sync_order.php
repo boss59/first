@@ -40,7 +40,7 @@
                 select * FROM shop_order_son_user_06 UNION
                 select * FROM shop_order_son_user_07 UNION
                 select * FROM shop_order_son_user_08 UNION
-                select * FROM shop_order_son_user UNION) as t
+                select * FROM shop_order_son_user_09 ) as t
                 where t.order_id >= '.$sync_order_son_id.' order by order_son_id asc limit 10';
 
     $wait_sync = $mysql ->query($wait_sync_sql) -> fetch_all(MYSQLI_ASSOC);
@@ -49,7 +49,6 @@
         $max_son_id = $v['order_son_id'];
     }
 
-    echo "<pre />";
     # 同步订单子表的数据 到 按照商家维度的表中
 
     foreach ($wait_sync as $k => $v){
@@ -59,9 +58,12 @@
         $table_name = 'shop_order_son_business_0'.$table_number;
 
         $sync_sql = 'insert into  '.$table_name.'
-        (`order_son_id`,`order_id`,`user_id`,`order_amout`,`order_status`,`business_id`)
+        (`order_son_id`,`order_id`,`user_id`,`order_amount`,`order_status`,`business_id`)
         values('.$v['order_son_id'].','.$v['order_id'].','.$v['user_id'].','.$v['order_amount'].',
         '.$v['order_status'].','.$v['business_id'].' )';
+
+        echo $sync_sql;
+        echo "<hr />";
         $result = $mysql -> query($sync_sql);
 
         if ( !$result){
@@ -92,7 +94,7 @@
                 select * FROM shop_order_detail_user_06 UNION
                 select * FROM shop_order_detail_user_07 UNION
                 select * FROM shop_order_detail_user_08 UNION
-                select * FROM shop_order_detail_user_09 UNION) as t 
+                select * FROM shop_order_detail_user_09 ) as t 
                 where t.order_id >='.$sync_order_detail_id.' order by detail_id asc limit 20';
 
     $goods_detail_info =$mysql -> query($order_goods_sync_sql) -> fetch_all(MYSQLI_ASSOC);
@@ -103,9 +105,10 @@
 
         $insert_sql = 'insert into '.$table_name.'
         (`detail_id`,`order_id`,`business_id`,`order_son_id`,`goods_id`,`goods_name`,`buy_number`,`goods_price`)
-        values('.$v['detail_id'].','.$v['order_id'].','.$v['order_son_id'].','.$v['goods_id'].',"'.$v['goods_name'].'",'.$v['buy_number'].','.$v['goods_price'].')';
+        values('.$v['detail_id'].','.$v['order_id'].','.$v['business_id'].','.$v['order_son_id'].','.$v['goods_id'].',"'.$v['goods_name'].'",'.$v['buy_number'].','.$v['goods_price'].' )';
 
         echo $insert_sql;
+        echo "<hr />";
         $result = $mysql -> query($insert_sql);
         if (!$result){
             file_put_contents(__DIR__.'/fail.log','order_detail写入失败 ，id为'.$v['detail_id']."\r\n",8);

@@ -10,7 +10,7 @@
     $user_id = 1;
 
     # 取出来购物车的数据
-    $cart_sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where cart_idin( '.$cart_id.' )';
+    $cart_sql = 'select * from shop_cart c LEFT JOIN  shop_goods g ON g.goods_id = c.goods_id where cart_id in( '.$cart_id.' )';
     $cart_list = $mysql -> query($cart_sql) -> fetch_all(MYSQLI_ASSOC);
 
 
@@ -41,8 +41,8 @@
                 select * FROM shop_order_06 UNION
                 select * FROM shop_order_07 UNION
                 select * FROM shop_order_08 UNION
-                select * FROM shop_order_09 UNION
-                ORDER BY order_id DESC limit 1';
+                select * FROM shop_order_09 ORDER BY order_id DESC limit 1';
+
         echo "订单主表sql：".$order_id_sql;
         $order_id_info = $mysql -> query($order_id_sql) ->fetch_assoc();
 
@@ -96,9 +96,9 @@ try{
                 select * FROM shop_order_son_user_06 UNION
                 select * FROM shop_order_son_user_07 UNION
                 select * FROM shop_order_son_user_08 UNION
-                select * FROM shop_order_son_user_09 UNION ORDER BY order_son_id DESC limit 1';
+                select * FROM shop_order_son_user_09 ORDER BY order_son_id DESC limit 1';
 
-        echo "订单子表".$order_son_id_sql;
+        echo "订单子表:".$order_son_id_sql;
         $order_son_id_info = $mysql -> query($order_son_id_sql) ->fetch_assoc();
 
         if (empty($order_son_id_sql)){
@@ -136,9 +136,9 @@ try{
                 select * FROM shop_order_detail_user_06 UNION
                 select * FROM shop_order_detail_user_07 UNION
                 select * FROM shop_order_detail_user_08 UNION
-                select * FROM shop_order_detail_user_09 UNION ORDER BY detail_id DESC limit 1';
+                select * FROM shop_order_detail_user_09 ORDER BY detail_id DESC limit 1';
 
-        echo "订单详情表".$detail_id_sql."<br />";
+        echo "订单详情表 :".$detail_id_sql."<br />";
         $detail_id_info = $mysql -> query($detail_id_sql) ->fetch_assoc();
 
         if (empty($detail_id_info)){
@@ -159,9 +159,9 @@ try{
         foreach ($v as $kk => $vv){
             $business_order_amount += $vv['buy_number'] * $vv['goods_price'];
             # 写入 订单详情表的数据
-            $detail_id_insert_sql = 'insert into '.$detail_table_name.'
+            $detail_id_insert_sql = 'insert into '.$detail_table_name.' 
             (`detail_id`,`order_id`,`order_son_id`,`goods_id`,`goods_name`,`goods_price`,`business_id`,`buy_number`)
-            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].','.$vv['goods_name'].','.$vv['goods_price'].','.$k.','.$vv['buy_number'].' )';
+            values( '.$detail_id.','.$order_id.','.$order_son_id.','.$vv['goods_id'].',"'.$vv['goods_name'].'",'.$vv['goods_price'].','.$k.','.$vv['buy_number'].' )';
             echo '订单详情表添加：'.$detail_id_insert_sql;
             $detail_insert = $mysql -> query($detail_id_insert_sql);
 
