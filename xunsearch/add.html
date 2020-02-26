@@ -56,6 +56,7 @@
     $(document).ready(function(){
         $("input[name='btn']").click(function(){
             var data = {};// 定义一个空的json串
+            data.id = $("input[name='id']").val();
             data.title = $("input[name='title']").val();
             data.content = $("input[name='content']").val();
             data.click_count = $("input[name='click_count']").val();

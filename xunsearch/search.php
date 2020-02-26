@@ -1,7 +1,7 @@
 <?php
 
     # 加载核心类
-    require_once '/usr/local/xunsearch/xun/sdk/php/lib/XS.php';
+    require_once '/usr/local/xunsearch/sdk/php/lib/XS.php';
 
     # 找到对应的配置文件，生成对象
     $xs = new XS('/usr/local/xunsearch/sdk/php/app/blog.ini');
@@ -11,7 +11,7 @@
 
     $keyword = $_GET['keyword'] ?? '';
     if (empty($keyword)){
-        exit('请输入keyword参数');
+//        exit('请输入keyword参数');
     }
 
     // 设置搜索语句

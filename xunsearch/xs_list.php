@@ -1,7 +1,8 @@
 <?php
 
+    // 展示
     # 加载核心类
-    require_once '/usr/local/xunsearch/xun/sdk/php/lib/XS.php';
+    require_once '/usr/local/xunsearch/sdk/php/lib/XS.php';
 
     # 找到对应的配置文件，生成对象
     $xs = new XS('/usr/local/xunsearch/sdk/php/app/blog.ini');
@@ -9,10 +10,7 @@
     # 获取 搜索对象
     $search = $xs -> search;
 
-    $keyword = $_GET['keyword'] ?? '';
-    if (empty($keyword)){
-//        exit('请输入keyword参数');
-    }
+    $keyword = empty($_GET['keyword']) ? "" : $_GET['keyword'];
 
     $page = $_GET['page'] ?? 1;
     $page_size = 5;
@@ -37,28 +35,18 @@
     $count = $search->count();
 
     echo '共找到'.$count.'条数据';
-    echo '<pre/><hr/>';
-    // print_r($docs);
 
-
-
-    // 高亮处理
-    echo '<style>
-                 em{
-                    color: blue;
-                    font-weight: bold;
-                 }
-              </style>';
-//    foreach ($docs as $doc)
-//    {
-//        $subject = $search->highlight($doc->subject); // 高亮处理 subject 字段
-//        $message = $search->highlight($doc->content); // 高亮处理 message 字段
-//        echo $doc->rank() . '. ' . $subject . " [" . $doc->percent() . "%] - ";
-//        echo "\n" . strip_tags(htmlspecialchars_decode($message),'<em />') . "\n";
-//
-//        echo "\n点击量为".$doc->click_count;
-//        echo '<hr />';
-//    }
+    $total = ceil($count/$page_size);
+    //上一頁的判斷
+    $pp = $page-1;
+    if($pp <= 0 ){
+        $pp = 1;
+    }
+    //下一頁
+    $ppp = $page + 1;
+    if($ppp > $total){
+        $ppp = $total;
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -76,6 +64,12 @@
     </style>
 </head>
 <body>
+<center>
+<form action="xs_list.php" method='get'>
+    <input type="text" name='keyword' value='<?php echo $keyword ?>'>
+    <input type="submit" value='搜索'>
+</form>
+
 <table border="1" align="center">
     <tr align="center">
         <td>编号</td>
@@ -89,17 +83,30 @@
     <?php foreach ( $docs as $doc){?>
         <tr align="center">
             <td><?php echo $doc['id']?></td>
-            <td><?php echo $doc['title']?></td>
-            <td><?php echo strip_tags(htmlspecialchars_decode($doc['content']))?></td>
+            <td><?php echo $search->highlight($doc['title'])?></td>
+            <td><?php echo $search->highlight(strip_tags(htmlspecialchars_decode($doc['content'])))?></td>
             <td><?php echo $doc['click_count']?></td>
             <td><?php echo $doc['favour_cont']?></td>
             <td><?php echo $doc['publish_time']?></td>
             <td>
-                <a href="./xs_del.php?id=<?php echo $doc['id']?>?>">删除</a>
-                <a href="./xs_update.php?id=<?php echo $doc['id']?>?>">修改</a>
+                <a href="./xs_del.php?id=<?php echo $doc['id']?>">删除</a>
+                <a href="./xs_update.php?id=<?php echo $doc['id']?>">修改</a>
             </td>
         </tr>
     <?php }?>
 </table>
+
+
+<a href="xs_list.php?page=1">首页</a> &nbsp;
+<a href="xs_list.php?page=<?php echo $pp ?>&keyword=<?php echo $keyword ?>">上一页</a> &nbsp;
+<?php
+for ($i=1; $i <=$total ; $i++) {
+    ?>
+    <a href="xs_list.php?page=<?php echo $i ?>&keyword=<?php echo $keyword ?>"><?php echo $i ?></a>
+<?php } ?>
+&nbsp;
+<a href="xs_list.php?page=<?php echo $ppp ?>&keyword=<?php echo $keyword ?>">下一页</a> &nbsp;
+<a href="xs_list.php?page=<?php echo $total ?>&keyword=<?php echo $keyword ?>">尾頁</a>
+</center>
 </body>
 </html>
