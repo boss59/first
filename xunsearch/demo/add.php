@@ -19,7 +19,7 @@
         $click_count = rand(1,1000);
         $favour_count = rand(1,1000);
 
-        $insert_sql = 'insert into blog_artice (`title`,`content`,`click_count`,`favour_cont`,`publish_time`) 
+        $insert_sql = 'insert into blog_artice (`title`,`content`,`click_count`,`favour_count`,`publish_time`) 
         values ("'.addslashes($title).'","'.addslashes($content).'",'.$click_count.','.$favour_count.','.time().' )';
 //        echo $insert_sql;exit;
         $insert_result = $mysql -> query($insert_sql);

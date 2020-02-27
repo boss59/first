@@ -29,7 +29,7 @@
         $favour_count = rand(1,1000);
 
         $update_sql = 'update blog_artice  set
-        `title` ="'.addslashes($title).'",`content` = "'.addslashes($content).'",`click_count` ='.$click_count.',`favour_cont` = '.$favour_cont.',`publish_time` = '.time().' where id ='.$article_id;
+        `title` ="'.addslashes($title).'",`content` = "'.addslashes($content).'",`click_count` ='.$click_count.',`favour_count` = '.$favour_count.',`publish_time` = '.time().' where id ='.$article_id;
         //        echo $update_sql;exit;
         $update_result = $mysql -> query($update_sql);
 

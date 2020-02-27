@@ -57,7 +57,7 @@
             $list[$k]['content'] = $search->highlight(strip_tags(htmlspecialchars_decode($doc ->content)));
             $list[$k]['publish_time'] = date('Y-m-d H:i:s',$doc -> publish_time);
             $list[$k]['click_count'] = $doc -> click_count;
-            $list[$k]['favour_cont'] = $doc -> favour_cont;
+            $list[$k]['favour_count'] = $doc -> favour_count;
         }
 
         // 返回数据
@@ -131,7 +131,7 @@
                 ,{field: 'title', width:270, title: '标题'}
                 ,{field: 'content', width:280, title: '内容'}
                 ,{field: 'click_count', width:100, title: '点击量', sort: true}
-                ,{field: 'favour_cont', width:100, title: '关注', sort: true}
+                ,{field: 'favour_count', width:100, title: '关注', sort: true}
                 ,{field: 'publish_time',width:200, title: '发布时间', sort: true}
                 ,{title: '操作',fixed: 'right', width:280, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器
             ]]
